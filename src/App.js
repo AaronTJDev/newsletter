@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import Loading from './components/Loading';
 import NotifyContext from './context/NotifyContext';
 import Newsletter from './components/Newsletter';
 import Notification from './components/Notification';
 
 function App() {
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const notify = (msg) => {
     var el = document.querySelector("#notify");
@@ -24,8 +26,13 @@ function App() {
           message: message,
         }}
       >
-        <Newsletter/>
+        <Newsletter handleLoad={setLoading}/>
         <Notification/>
+        { 
+          loading
+            ? <Loading/>
+            : null
+        }
       </NotifyContext.Provider>
     </div>
   );

@@ -5,7 +5,7 @@ import Form from './Form';
 import './newsletter.css';
 const data = require('../../mock_data.json');
 
-export default function Newsletter() {
+export default function Newsletter(props) {
   const notifyContext = useContext(NotifyContext);
   const [newsletters, setNewsletters] = useState([]);
   const [consent, setConsent] = useState(false);
@@ -42,9 +42,11 @@ export default function Newsletter() {
       newslettersToReceive: newsletters
     }
 
-    // Fire post request
+    // Fire post request w/ data 
+    props.handleLoad(true);
     setTimeout(() => {
       fakeRequest() ? notifyContext.notify(`Successfully subscribed to ${newsletters.length} newsletter(s).`) : notifyContext.notify('Failed to subscribe to newsletter.');
+      props.handleLoad(false);
     }, 2000)
   }
 
@@ -61,10 +63,11 @@ export default function Newsletter() {
       </div>
       <div className="news-item-container">
         {
-          data.map( item => { 
+          data.map( (item, index) => { 
             return <NewsItem 
                     toggleNewsletter={toggleNewsletter}
                     content={item}
+                    key={index}
                   />
           })
         }
